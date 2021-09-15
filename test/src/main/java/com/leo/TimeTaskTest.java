@@ -1,6 +1,8 @@
 package com.leo;
 
 import com.sun.corba.se.impl.orbutil.CacheTable;
+import io.netty.util.HashedWheelTimer;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  *    Timer---> TimerThread
@@ -37,6 +40,31 @@ public class TimeTaskTest extends TimerTask {
 
     }
 
+    public static class Logger {
+        public static void info(String var) {
+
+            System.out.println(Thread.currentThread().getName() + " " + new Date() + "：" + var);
+        }
+    }
+
+    @Test
+    public void test02() throws IOException {
+        HashedWheelTimer timer = new HashedWheelTimer();
+        Logger.info("start");
+        timer.newTimeout(timeout -> {
+            Logger.info("1.running");
+            Thread.sleep(2000);
+            Logger.info("1.end");
+        }, 1, TimeUnit.SECONDS);
+
+        timer.newTimeout(timeout -> {
+            Logger.info("2.running");
+            Thread.sleep(2000);
+            Logger.info("2.end");
+        }, 1, TimeUnit.SECONDS);
+
+        System.in.read();
+    }
 
     @Override
     public void run() {

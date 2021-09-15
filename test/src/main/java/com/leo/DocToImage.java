@@ -1,6 +1,9 @@
 package com.leo;
 
+import com.aspose.pdf.devices.PngDevice;
+import com.aspose.pdf.devices.Resolution;
 import com.aspose.words.*;
+import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
@@ -12,6 +15,63 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DocToImage {
+
+    @Test
+    public void toPdf() throws Exception {
+        String path = "D:\\Users\\Documents";
+        File dirFile = new File(path);
+        File[] files = dirFile.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.getName().startsWith("~")) {
+                    return false;
+                }
+                if (pathname.getName().endsWith(".doc") || pathname.getName().endsWith(".docx")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        getWordLicense();
+        for (File file : files) {
+            // Load the Word document from disk
+            String name = file.getName();
+            String fileName = name.substring(0, name.lastIndexOf("."));
+            InputStream inputStream = new FileInputStream(file);
+            Document doc = new Document( inputStream);
+            String parent = file.getParent();
+            String fileSuffix = parent + "/" + fileName;
+            // Save as PDF
+            String pdfFile = fileSuffix + ".pdf";
+            doc.save(fileSuffix + ".pdf");
+            pdfToImage(pdfFile, fileSuffix);
+
+        }
+
+    }
+
+    public void pdfToImage(String pdfFile, String targetImagePath) throws Exception {
+        // For complete examples and data files, please go to https://github.com/aspose-pdf/Aspose.Pdf-for-Java
+// Open document
+        com.aspose.pdf.Document pdfDocument = new com.aspose.pdf.Document(pdfFile);
+
+// Loop through all the pages of PDF file
+        int pageSize = pdfDocument.getPages().size();
+        for (int pageCount = 1; pageCount <= pageSize; pageCount++) {
+            // Create stream object to save the output image
+            java.io.OutputStream imageStream = new java.io.FileOutputStream(targetImagePath + (pageSize == 1 ? ".png" :  pageCount + ".png"));
+
+            // Create Resolution object
+            Resolution resolution = new Resolution(300);
+            // Create PngDevice object with particular resolution
+            PngDevice pngDevice = new PngDevice(resolution);
+            // Convert a particular page and save the image to stream
+            pngDevice.process(pdfDocument.getPages().get_Item(pageCount), imageStream);
+
+            // Close the stream
+            imageStream.close();
+        }
+    }
 
     public static void main(String[] args) throws Exception {
         String dir = "D:\\Users\\Documents";
@@ -134,7 +194,8 @@ public class DocToImage {
             List<BufferedImage> imageList = new ArrayList<BufferedImage>();
             for (int i = 0; i < pageCount; i++) {
                 OutputStream output = new ByteArrayOutputStream();
-                options.setPageIndex(i);
+//                options.setPageIndex(i); // 20.1
+
 
                 doc.save(output, options);
                 ImageInputStream imageInputStream = ImageIO.createImageInputStream(parse(output));
