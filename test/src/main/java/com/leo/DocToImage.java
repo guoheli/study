@@ -43,11 +43,24 @@ public class DocToImage {
             String fileSuffix = parent + "/" + fileName;
             // Save as PDF
             String pdfFile = fileSuffix + ".pdf";
-            doc.save(fileSuffix + ".pdf");
+            doc.save(pdfFile);
             pdfToImage(pdfFile, fileSuffix);
+            // single add water text
+            Font font = new Font("微软雅黑", Font.PLAIN, 60);
+            String srcImgPath = fileSuffix + ".png"; //源图片地址
+            String tarImgPath = fileSuffix + "_source.png"; //待存储的地址
+            Color color = Color.BLUE;
 
+            addWaterMark(srcImgPath, tarImgPath, fileName, color, font);
+            // 删除多余的文件
+            new File(srcImgPath).delete();
+            new File(pdfFile).delete();
         }
 
+    }
+
+    public void zzYK() {
+        // {@link zzYk
     }
 
     public void pdfToImage(String pdfFile, String targetImagePath) throws Exception {
