@@ -91,3 +91,8 @@ fs.file-max=1000000
 ### bind模型 ###
 
 ![](https://alvin-jay.oss-cn-hangzhou.aliyuncs.com/middleware/netty/Netty-Server-Start-4.png)
+
+
+
+https://github.com/code4craft/netty-learning
+https://www.javadoop.com/post/netty-part-1
