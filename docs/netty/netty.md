@@ -32,6 +32,12 @@ https://blog.csdn.net/w372426096/category_8507957.html
 
 https://blog.csdn.net/u013967175/category_9273730.html
 
+
+
+https://github.com/code4craft/netty-learning
+https://www.javadoop.com/post/netty-part-1
+
+https://www.jianshu.com/nb/34117511 netty源码分析 --其他源码分析
 ```
 
 
@@ -93,6 +99,68 @@ fs.file-max=1000000
 ![](https://alvin-jay.oss-cn-hangzhou.aliyuncs.com/middleware/netty/Netty-Server-Start-4.png)
 
 
+### 核心关键类 ###
 
-https://github.com/code4craft/netty-learning
-https://www.javadoop.com/post/netty-part-1
+#### Channel ####
+
+
+### Future和Promise ####
+
+![d](https://www.javadoop.com/blogimages/netty-source/7.png)
+
+
+#### ChannelPipeline ####
+![1](https://www.javadoop.com/blogimages/netty-source/9.png)
+![2](https://www.javadoop.com/blogimages/netty-source/14.png)
+![3](https://www.javadoop.com/blogimages/netty-source/19.png)
+>+ ChannelInitializer 的 initChannel(channel) 调用时机 Todo??
+
+
+#### 线程池 ####
+![1](https://www.javadoop.com/blogimages/netty-source/2.png)
+
+
+#### Register ####
+
+```text
+#initAndRegister--> Channel实例化 --> Pipeline添加Handler--->
+MultithreadEventLoopGroup#register--> NoiEventLoop#register-->SingleThreadEventLoop#register-->
+AbstractChannel#register(eventLoop, promise)---> AbstractUnsafe#resister0
+SingleThreadEventExecutor#execute（启动NioEventLoop线程)---> NioEventLoop#run
+AbstractChannel#resister0-->pipeline.invokeHandlerAddedIfNeeded()--->pipeline.fireChannelRegistered()
+```
+![1](https://www.javadoop.com/blogimages/netty-source/21.png)
+
+
+#### Bind & Connect ####
+
+bind和Connect都是OutBound类型
+
+>+ 客户端（Connect)
+
+> AbstractChannel#connect-->Pipeline#connect-->tail.connect .->.->.-> HeadContext#connect--->
+> AbstractNioChannel.AbstractNioUnsafe#connect--->链接创建后所有的操作将在NioEventLoop#run的processSelectedKeys进行处理
+
+>+ 服务端(Bind)
+
+> AbstractChannel#bind-->Pipeline#bind-->tail.bind .->.->.-> HeadContext#bind
+
+
+#### 消息的编解码 ####
+
+processSelectedKeys分析
+
+#### 关系总结 ####
+
+>+ 一个 EventLoopGroup 包含多个 EventLoop
+>+ 一个 EventLoop 在他的生命周期中只和一个 Thread 绑定
+>+ 所有的 EventLoop 处理的 I/O 事件都将在专有的 Thread 上处理
+>+ 一个 Channel 在他的生命周期中只会注册一个 EventLoop
+>+ 一个 EventLoop 会被分配给多个 Channel;
+> 
+> 
+> 大图
+![1](Image_20210927124622.png)
+
+
+
