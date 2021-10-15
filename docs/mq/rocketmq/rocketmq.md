@@ -169,3 +169,17 @@ commitlog 的offset ，消息的大小，然后拿着commitlog offset与消息�
  成一个value，写到indexFile中
 
 ```
+
+### [commitLog索引机制](https://www.cnblogs.com/zuoyang/p/14464317.html) ###
+
+### [文件恢复](https://cana.space/rocketmq%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90_%E6%96%87%E4%BB%B6%E6%81%A2%E5%A4%8D%E5%92%8C%E8%BF%87%E6%9C%9F%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4/) ###
+![d](http://img.cana.space/picStore/20201129210552.png)
+
+#### DefaultMessageStore#recover #####
+>* 1、 DefaultMessageStore#loadConsumeQueue ---->  DefaultMessageStore#recoverConsumeQueue --> ConsumeQueue#recover (遍历)
+>* 2、 indexFile、 CommitLog类似
+> 
+> 
+
+
+### [读写分离](https://cloud.tencent.com/developer/article/1512980?from=article.detail.1615534) ###
