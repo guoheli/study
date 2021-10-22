@@ -71,6 +71,7 @@ public class ReentrantLockTest extends TimeCostTest{
 
     private static ReentrantLock lock1 = new ReentrantLock();
     private static ReentrantLock lock2 = new ReentrantLock();
+
     @Test
     public void deadLock() throws InterruptedException {
         Thread thread1 = new Thread("线程1") {

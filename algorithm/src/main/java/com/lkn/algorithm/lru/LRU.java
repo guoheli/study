@@ -90,6 +90,8 @@ public class LRU<T extends Comparable> {
 			first = item;
 			item.behind = null;
 			item.front = null;
+			// 收尾一致
+			last = first;
 		} else {
 			first.front = item;
 			item.behind = first;

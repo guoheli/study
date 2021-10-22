@@ -119,10 +119,9 @@ public class LruCache {
             int key1 = delItem.getKey();
             cacheDb.remove(key1);
             head.next = next;
-            delItem = head;
             // 获取并修改下一个元素的pre
-//            LruItem lruItem = cacheDb.get(next.key);
-//            lruItem.pre = head;
+            LruItem lruItem = cacheDb.get(next.key);
+            lruItem.pre = head;
             put(key, value);
             return;
         }
