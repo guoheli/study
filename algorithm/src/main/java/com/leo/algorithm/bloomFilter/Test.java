@@ -67,6 +67,14 @@ public class Test {
     }
 
 
+    @org.junit.Test
+    public void temp () {
+        String str = "camera/2gFnDhMF/2021121311/A1C-1639364732005";
+        Integer s = str.endsWith(".ts") ? 7200000 : 3600000;
+        System.out.println("=======>" + s);
+
+    }
+
 
     public static void main(String[] args) {
 
