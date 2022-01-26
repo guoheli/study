@@ -23,6 +23,7 @@
         <module>multithreading</module>
         <module>leetcode</module>
         <module>test</module>
+        <module>Sentinel</module>
     </modules>
     <packaging>pom</packaging>
 

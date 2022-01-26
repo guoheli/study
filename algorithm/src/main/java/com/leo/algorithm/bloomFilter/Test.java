@@ -79,14 +79,14 @@ public class Test {
     public static void main(String[] args) {
 
         // instance
-        String value = "630182853";
+        String value = "653502454";
 //        String value = "269586631";
         int iff = Math.abs((("IOT" +value).hashCode()) % 100);
         String realDb = getRealDb(value);
         System.out.println(realDb + " >>> "+iff);
 
 
-        String deviceId = "2gFnDl3y";
+        String deviceId = "zVQjY14t";
         int collection = Math.abs(deviceId.hashCode()) % 100;
         System.out.println(collection);
 //        MongoCollection mongoCollection = client.getDataBase().getCollection("shadow_deviceId_prefix_" + collection);

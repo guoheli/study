@@ -132,6 +132,23 @@ AbstractChannel#resister0-->pipeline.invokeHandlerAddedIfNeeded()--->pipeline.fi
 ![1](https://www.javadoop.com/blogimages/netty-source/21.png)
 
 
+#### pipeline handler 执行顺序 ####
+
+>+ pipeline有read到数据后，是从head往后查找 有in性质的handler
+>+ pipeline有write数据是，是从 tail往前查找 有out性质的handler
+
+[总结结论](https://www.cnblogs.com/tianzhiliang/p/11739372.html)
+```text
+1、有效的InboundHandler是指通过fire事件能触达到的最后一个InboundHander。
+2、如果想让所有的OutboundHandler都能被执行到，那么必须把OutboundHandler放在最后一个有效的InboundHandler之前。
+3、推荐的做法是通过addFirst加载所有OutboundHandler，再通过addLast加载所有InboundHandler。
+4、OutboundHandler是通过write方法实现Pipeline的串联的。
+5、如果OutboundHandler在Pipeline的处理链上，其中一个OutboundHandler没有调用write方法，最终消息将不会发送出去。
+6、ctx.writeAndFlush是从当前ChannelHandler开始，逆序向前执行OutboundHandler。
+7、ctx.writeAndFlush所在ChannelHandler后面的OutboundHandler将不会被执行。
+8、ctx.channel().writeAndFlush 是从最后一个OutboundHandler开始，依次逆序向前执行其他OutboundHandler，即使最后一个ChannelHandler是OutboundHandler，在InboundHandler之前，也会执行该OutbondHandler。
+9、千万不要在OutboundHandler的write方法里执行ctx.channel().writeAndFlush，否则就死循环了。
+```
 #### Bind & Connect ####
 
 bind和Connect都是OutBound类型
